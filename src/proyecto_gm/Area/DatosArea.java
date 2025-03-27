@@ -18,42 +18,43 @@ public class DatosArea {
     static Connection conn = ConexionBD.getConnection();
 
     
-    public static void Limpiar(Container contenedor){
-        for (Component componente: contenedor.getComponents()){
-            if(componente instanceof JTextField){
+    public static void Limpiar(Container contenedor) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
                 ((JTextField) componente).setText("");
-            }else if ( componente instanceof Container){
-                Limpiar((Container)componente);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
             }
-        }  
+        }
     }
     
-    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+    public static String GenerarCodigo() {
         CallableStatement cstmt = null;
-        String codigo_generado = "";
+        String codigoGenerado = "";
         try {
             cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
-            cstmt.setString(1, tabla);
-            cstmt.setString(2, prefijo);
-            cstmt.setInt(3, longitud);
+
+            cstmt.setString(1, "area");
+            cstmt.setString(2, "IdArea");
+            cstmt.setString(3, "ARE");
+
             cstmt.registerOutParameter(4, Types.VARCHAR);
 
             cstmt.execute();
 
-            codigo_generado = cstmt.getString(4);
+            codigoGenerado = cstmt.getString(4);
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            if (cstmt != null) {
-                try {
+            try {
+                if (cstmt != null) {
                     cstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (SQLException ignored) {
             }
         }
-        return codigo_generado;
-        
+        return codigoGenerado;
     }
    // Habilitar o bloquear campos y botones
     public static void Habilitar(Container contenedor,  boolean bloquear) {

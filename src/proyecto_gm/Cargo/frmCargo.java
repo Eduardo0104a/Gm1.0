@@ -44,9 +44,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
         DatosCargo.Habilitar(escritorio, false);
 
         DatosCargo.Mostrar(modelo);
-        // Quitar la edicion de las celdas
         tblCargo.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblCargo.setRowSelectionAllowed(true);
  
     }
@@ -221,7 +219,6 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
         DatosCargo.Eliminar(tblCargo);
         DatosCargo.Habilitar(escritorio, false);
 
@@ -253,7 +250,6 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -266,19 +262,15 @@ public class frmCargo extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Cargo car = new Cargo();
 
-    // Obtenemos el código del cargo y la descripción desde los campos de texto
     String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
     try {
-        car.setIdCargo(Integer.parseInt(idTexto));  // Solo si el código de cargo es numérico
+        car.setIdCargo(Integer.parseInt(idTexto));  
     } catch (NumberFormatException e) {
-        car.setIdCargo(0);  // Si el campo es vacío o incorrecto
+        car.setIdCargo(0);  
     }
 
-    car.setDescripcion(txtDescripcion.getText());  // Asignamos la descripción
-
-    // Verificamos si es un nuevo registro o una actualización
+    car.setDescripcion(txtDescripcion.getText());  
     if (esNuevo) {
-        // Validación de campos para inserción
         if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Completar bien los campos");
             return;
@@ -286,7 +278,6 @@ public class frmCargo extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             txtCodigo.requestFocus();
         } else {
-            // Insertamos los datos si es un nuevo registro
             if (DatosCargo.Insertar(car, tblCargo)) {
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 DatosCargo.Limpiar(escritorio);
@@ -298,13 +289,11 @@ public class frmCargo extends javax.swing.JInternalFrame {
             }
         }
     } else {
-        // Validación de campos para actualización
         if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Completar bien los campos");
             return;
         } else {
-            // Actualizamos el cargo en la base de datos
-            car.setCodigoCargo(txtCodigo.getText());  // Pasamos el código de cargo en caso de ser necesario
+            car.setCodigoCargo(txtCodigo.getText()); 
             DatosCargo.Actualizar(car, tblCargo);
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
             DatosCargo.Limpiar(escritorio);

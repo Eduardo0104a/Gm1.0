@@ -1,12 +1,11 @@
 package proyecto_gm.Cargo;
 
 public class Cargo {
-    // Atributos
-    private int idCargo;  // Ahora es int
-    private String codigoCargo;  // Código formateado (ejemplo: CAR0001)
+   
+    private int idCargo;  
+    private String codigoCargo;  
     private String descripcion;
 
-    // Constructor vacío
     public Cargo() {}
 
     // Constructor con parámetros

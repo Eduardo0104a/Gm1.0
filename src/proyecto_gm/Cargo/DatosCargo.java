@@ -67,7 +67,7 @@ public class DatosCargo {
 
     public static boolean Insertar(Cargo car, JTable tabla) {
         try ( CallableStatement stmt = conn.prepareCall("{CALL insertar_cargos(?, ?)}")) {
-            String nuevoCodigo = GenerarCodigo(); // Generar CódigoCargo
+            String nuevoCodigo = GenerarCodigo(); 
             stmt.setString(1, car.getDescripcion());
             stmt.registerOutParameter(2, Types.VARCHAR);
             int filasAfectadas = stmt.executeUpdate();
@@ -76,7 +76,7 @@ public class DatosCargo {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.addRow(new Object[]{car.getCodigoCargo(), car.getDescripcion()});
 
-            return filasAfectadas > 0; // Retorna true si se afectó al menos una fila
+            return filasAfectadas > 0; 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -86,16 +86,14 @@ public class DatosCargo {
     public static void Actualizar(Cargo car, JTable tabla) {
         try {
             CallableStatement ate = conn.prepareCall("{CALL actualizar_cargos (?,?)}");
-            // Defino los parámetros para actualizar
             ate.setString(1, car.getCodigoCargo());
             ate.setString(2, car.getDescripcion());
             ate.executeUpdate();
 
-            // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0); // Quitar filas de la tabla
+            modelo.setRowCount(0); 
 
-            DatosCargo.Mostrar(modelo); // Recargar los datos de la tabla con los valores actualizados
+            DatosCargo.Mostrar(modelo); 
             ate.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -125,11 +123,10 @@ public class DatosCargo {
         int fila = tabla.getSelectedRow();
         if (fila != -1) {
             Habilitar(contenedor, true);
-            // Rellenar los campos de texto con los valores actuales
             for (int i = 0; i < campos.length; i++) {
                 campos[i].setText(tabla.getModel().getValueAt(fila, i).toString());
             }
-            campos[0].setEnabled(false); // Bloquear CódigoCargo
+            campos[0].setEnabled(false); 
             campos[1].requestFocus();
             return true;
         } else {

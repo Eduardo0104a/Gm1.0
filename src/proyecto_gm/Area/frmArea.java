@@ -43,26 +43,6 @@ public class frmArea extends javax.swing.JInternalFrame {
         DatosArea.Mostrar(modelo);
         tblArea.setCellSelectionEnabled(false);
         tblArea.setRowSelectionAllowed(true);
-        
-        // Personalizar header
-        //JTableHeader header = tblArea.getTableHeader();
-        //JTableHeader header = tblArea.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        });
     }  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -75,7 +55,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -130,9 +110,9 @@ public class frmArea extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
+                txtCodigoKeyTyped(evt);
             }
         });
 
@@ -196,7 +176,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                                     .addComponent(btnDeshacer)
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(180, 180, 180)))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -212,7 +192,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                     .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -247,18 +227,18 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Area are= new Area();
-        are.setId(txtId.getText());
+        are.setId(txtCodigo.getText());
         are.setDescripcion(txtDescripcion.getText());
         //verificar si debo ingresar o actualizar
         if (esNuevo) {
             // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
                     return;
                 } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+            else if(!txtCodigo.getText().matches("^[A-Z]{2}[0-9]{2}$")){
                 JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
+                txtCodigo.requestFocus();
             }
             else {
                     DatosArea.Insertar(are, tblArea);
@@ -273,7 +253,7 @@ public class frmArea extends javax.swing.JInternalFrame {
             
         } else {
             // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
                     return;
                 } else {
@@ -298,26 +278,26 @@ public class frmArea extends javax.swing.JInternalFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         JTextField [] cod= new JTextField [2];
-        cod[0] = txtId;
+        cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
         DatosArea.Editar(escritorio, tblArea, cod);
 
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
+        if (txtCodigo.getText().length() >= 4) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
-    }//GEN-LAST:event_txtIdKeyTyped
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosArea.Habilitar(escritorio, true);
         String codigo = DatosArea.GenerarCodigo("areas", "AR" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
+        txtCodigo.setText(codigo);
+        txtCodigo.setEnabled(false);
         
         txtDescripcion.requestFocus();
         esNuevo=true;
@@ -338,7 +318,7 @@ public class frmArea extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblArea;
+    public static javax.swing.JTextField txtCodigo;
     public static javax.swing.JTextField txtDescripcion;
-    public static javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
