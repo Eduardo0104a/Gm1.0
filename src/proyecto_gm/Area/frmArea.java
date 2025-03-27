@@ -41,9 +41,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         DatosArea.Habilitar(escritorio, false);
         
         DatosArea.Mostrar(modelo);
-        // Quitar la edicion de las celdas
         tblArea.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblArea.setRowSelectionAllowed(true);
         
         // Personalizar header
@@ -140,7 +138,6 @@ public class frmArea extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripción:");
 
-        tblArea.setBackground(new java.awt.Color(255, 255, 255));
         tblArea.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -160,7 +157,6 @@ public class frmArea extends javax.swing.JInternalFrame {
         tblArea.setFocusable(false);
         tblArea.setRowHeight(25);
         tblArea.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblArea.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblArea.setShowGrid(true);
         jScrollPane1.setViewportView(tblArea);
         if (tblArea.getColumnModel().getColumnCount() > 0) {

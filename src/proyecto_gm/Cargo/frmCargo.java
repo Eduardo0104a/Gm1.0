@@ -1,28 +1,56 @@
 package proyecto_gm.Cargo;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import static proyecto_gm.Area.frmArea.tblArea;
+import static proyecto_gm.Cargo.DatosCargo.Limpiar;
 
 public class frmCargo extends javax.swing.JInternalFrame {
-    
-    boolean esNuevo=false;
+
+    boolean esNuevo = false;
 
     public frmCargo() {
         initComponents();
+        JTableHeader header = tblCargo.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
         DefaultTableModel modelo = (DefaultTableModel) tblCargo.getModel();
-        
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
+
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
         DatosCargo.Habilitar(escritorio, false);
-        
+
         DatosCargo.Mostrar(modelo);
         // Quitar la edicion de las celdas
         tblCargo.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
         tblCargo.setRowSelectionAllowed(true);
+ 
     }
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -38,7 +66,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCargo = new javax.swing.JTable();
-        txtId = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setClosable(true);
@@ -102,23 +130,25 @@ public class frmCargo extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Descripción"
+                "ID", "DESCRIPCIÓN"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+            boolean[] canEdit = new boolean [] {
+                false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        tblCargo.setRowSelectionAllowed(true);
+        tblCargo.setRowHeight(25);
+        tblCargo.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        tblCargo.setShowGrid(true);
         jScrollPane1.setViewportView(tblCargo);
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
+                txtCodigoKeyTyped(evt);
             }
         });
 
@@ -145,7 +175,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(57, 57, 57)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -168,7 +198,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
@@ -198,21 +228,27 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        JTextField [] cod= new JTextField [2];
-        cod[0] = txtId;
+        JTextField[] cod = new JTextField[2];
+        cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
         DatosCargo.Editar(escritorio, tblCargo, cod);
-
-        esNuevo=false;
+        esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosCargo.Habilitar(escritorio, true);
-        String codigo = DatosCargo.GenerarCodigo("cargos", "CA" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
+        String codigo = DatosCargo.GenerarCodigo();
+
+        if (codigo != null) {
+            txtCodigo.setText(codigo);
+            txtCodigo.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         txtDescripcion.requestFocus();
-        esNuevo=true;
+        esNuevo = true;
         tblCargo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -221,66 +257,81 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosCargo.Limpiar(rootPane);
+        DatosCargo.Limpiar(escritorio);
         DatosCargo.Habilitar(escritorio, false);
         tblCargo.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
         tblCargo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:z
+        Cargo car = new Cargo();
 
-        Cargo car= new Cargo();
-        car.setId(txtId.getText());
-        car.setDescripcion(txtDescripcion.getText());
-        //verificar si debo ingresar o actualizar
-        if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: CR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            }
-            else {
-                DatosCargo.Insertar(car, tblCargo);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosCargo.Limpiar(escritorio);
-               DatosCargo.Habilitar(escritorio, false);
-                    tblCargo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblCargo.setRowSelectionAllowed(true);
-            }
-            
+    // Obtenemos el código del cargo y la descripción desde los campos de texto
+    String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+    try {
+        car.setIdCargo(Integer.parseInt(idTexto));  // Solo si el código de cargo es numérico
+    } catch (NumberFormatException e) {
+        car.setIdCargo(0);  // Si el campo es vacío o incorrecto
+    }
+
+    car.setDescripcion(txtDescripcion.getText());  // Asignamos la descripción
+
+    // Verificamos si es un nuevo registro o una actualización
+    if (esNuevo) {
+        // Validación de campos para inserción
+        if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+            JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtCodigo.requestFocus();
         } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosCargo.Actualizar(car, tblCargo);
+            // Insertamos los datos si es un nuevo registro
+            if (DatosCargo.Insertar(car, tblCargo)) {
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 DatosCargo.Limpiar(escritorio);
-                    DatosCargo.Habilitar(escritorio, false);
-                    tblCargo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblCargo.setRowSelectionAllowed(true);
+                DatosCargo.Habilitar(escritorio, false);
+                tblCargo.clearSelection();
+                tblCargo.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
-  
         }
+    } else {
+        // Validación de campos para actualización
+        if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        } else {
+            // Actualizamos el cargo en la base de datos
+            car.setCodigoCargo(txtCodigo.getText());  // Pasamos el código de cargo en caso de ser necesario
+            DatosCargo.Actualizar(car, tblCargo);
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            DatosCargo.Limpiar(escritorio);
+            DatosCargo.Habilitar(escritorio, false);
+            tblCargo.clearSelection();
+            tblCargo.setRowSelectionAllowed(true);
+        }
+    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        char c = evt.getKeyChar();
+        String texto = txtCodigo.getText();
+
+        if (texto.length() < 3) {
+            if (!Character.isLetter(c) || !Character.isUpperCase(c)) {
+                evt.consume();
+            }
+        } else if (texto.length() < 7) {
+            if (!Character.isDigit(c)) {
+                evt.consume();
+            }
+        } else {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
-    }//GEN-LAST:event_txtIdKeyTyped
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -295,7 +346,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblCargo;
+    public static javax.swing.JTextField txtCodigo;
     public static javax.swing.JTextField txtDescripcion;
-    public static javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
