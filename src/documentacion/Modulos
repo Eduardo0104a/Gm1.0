@@ -1,0 +1,24 @@
+
+--modulo logistica
+--ARTICULO CRUD
+--CATEGORIA CRUD
+-- INGRESAR CANTIDAD O REALIZAR INVENTARIO DE ALMACEN X PERIODO (ANIO Y MES) Insertar y elimina dato de cantidad por periodo
+-- documento de entrada de los articulos (los documentos de entrada el reStock seria agregado por los factura o boletas de articulos a compra- entrada)
+-- documento de salida de los articulos ( los documentos de salida seria los documentos de salida para control de materiales de campo, salida de equipo)
+* los documentos de salida de campo , debe ser retornado y tener un responsable de los equipos enviado.
+
+
+
+--2024-12
+Lapiz cantidad:30
+
+
+--2025-01
+-- Lapiz  cantidad:20
+
+--2025-02
+--lapiz cantidad:10
+
+
+--ALMACEN CRUD 
+--REPORTE CONSULTA DE VER ARTICULO X PERIODO. Consulta 
