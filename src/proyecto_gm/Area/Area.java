@@ -9,7 +9,7 @@ public class Area {
      public Area() {   
     }
      
-    public Area(String Id, String Descripcion) {
+    public Area(int idArea, String codigoArea, String descripcionArea) {
         this.idArea = idArea;
         this.codigoArea = codigoArea;
         this.descripcionArea = descripcionArea;
@@ -19,19 +19,23 @@ public class Area {
         return idArea;
     }
 
-    public void setIdArea(String Id) {
+    public void setIdArea(int idArea) {
         this.idArea = idArea;
     }
+    
+    public String getCodigoArea(){
+        return codigoArea;
+    }
 
-    public void setCodigoArea(String codigoCargo) {
+    public void setCodigoArea(String codigoArea) {
         this.codigoArea = codigoArea;
     }
 
-    public String getDescripcion() {
+    public String getDescripcionArea() {
         return descripcionArea;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcionArea(String descripcionArea) {
         this.descripcionArea = descripcionArea;
     }
 }

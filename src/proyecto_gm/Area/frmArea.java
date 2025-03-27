@@ -227,45 +227,45 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Area are= new Area();
-        are.setId(txtCodigo.getText());
-        are.setDescripcion(txtDescripcion.getText());
-        //verificar si debo ingresar o actualizar
+        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+        try {
+            are.setIdArea(Integer.parseInt(idTexto));
+        } catch (NumberFormatException e) {
+            are.setIdArea(0);
+        }
+
+        are.setDescripcionArea(txtDescripcion.getText());
         if (esNuevo) {
-            // Insertar nuevo registro
             if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } 
-            else if(!txtCodigo.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtCodigo.requestFocus();
-            }
-            else {
-                    DatosArea.Insertar(are, tblArea);
+            } else {
+                if (DatosArea.Insertar(are, tblArea)) {
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosArea.Limpiar(escritorio);
                     DatosArea.Habilitar(escritorio, false);
                     tblArea.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
                     tblArea.setRowSelectionAllowed(true);
-        
-                }
-            
-        } else {
-            // Actualizar registro existente
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
                 } else {
-                    DatosArea.Actualizar(are, tblArea);
-                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                    DatosArea.Limpiar(escritorio);
-                    DatosArea.Habilitar(escritorio, false);
-                    tblArea.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblArea.setRowSelectionAllowed(true);
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        
+        } else {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else {
+                are.setCodigoArea(txtCodigo.getText());
+                DatosArea.Actualizar(are, tblArea);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosArea.Limpiar(escritorio);
+                DatosArea.Habilitar(escritorio, false);
+                tblArea.clearSelection();
+                tblArea.setRowSelectionAllowed(true);
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -295,12 +295,18 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosArea.Habilitar(escritorio, true);
-        String codigo = DatosArea.GenerarCodigo("areas", "AR" , 4);
-        txtCodigo.setText(codigo);
-        txtCodigo.setEnabled(false);
-        
+        String codigo = DatosArea.GenerarCodigo();
+
+        if (codigo != null) {
+            txtCodigo.setText(codigo);
+            txtCodigo.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         txtDescripcion.requestFocus();
-        esNuevo=true;
+        esNuevo = true;
         tblArea.setRowSelectionAllowed(false);
 
     }//GEN-LAST:event_btnAgregarActionPerformed

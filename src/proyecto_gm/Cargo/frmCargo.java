@@ -46,7 +46,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
         DatosCargo.Mostrar(modelo);
         tblCargo.setCellSelectionEnabled(false);
         tblCargo.setRowSelectionAllowed(true);
- 
+
     }
 
     @SuppressWarnings("unchecked")
@@ -262,46 +262,46 @@ public class frmCargo extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Cargo car = new Cargo();
 
-    String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
-    try {
-        car.setIdCargo(Integer.parseInt(idTexto));  
-    } catch (NumberFormatException e) {
-        car.setIdCargo(0);  
-    }
+        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+        try {
+            car.setIdCargo(Integer.parseInt(idTexto));
+        } catch (NumberFormatException e) {
+            car.setIdCargo(0);
+        }
 
-    car.setDescripcion(txtDescripcion.getText());  
-    if (esNuevo) {
-        if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
-            return;
-        } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-            JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            txtCodigo.requestFocus();
+        car.setDescripcion(txtDescripcion.getText());
+        if (esNuevo) {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtCodigo.requestFocus();
+            } else {
+                if (DatosCargo.Insertar(car, tblCargo)) {
+                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosCargo.Limpiar(escritorio);
+                    DatosCargo.Habilitar(escritorio, false);
+                    tblCargo.clearSelection();
+                    tblCargo.setRowSelectionAllowed(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         } else {
-            if (DatosCargo.Insertar(car, tblCargo)) {
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else {
+                car.setCodigoCargo(txtCodigo.getText());
+                DatosCargo.Actualizar(car, tblCargo);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                 DatosCargo.Limpiar(escritorio);
                 DatosCargo.Habilitar(escritorio, false);
                 tblCargo.clearSelection();
                 tblCargo.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    } else {
-        if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
-            return;
-        } else {
-            car.setCodigoCargo(txtCodigo.getText()); 
-            DatosCargo.Actualizar(car, tblCargo);
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            DatosCargo.Limpiar(escritorio);
-            DatosCargo.Habilitar(escritorio, false);
-            tblCargo.clearSelection();
-            tblCargo.setRowSelectionAllowed(true);
-        }
-    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped

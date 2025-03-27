@@ -91,39 +91,35 @@ public class DatosArea {
         }
     }
 
-    public static void Insertar(Area are,JTable tabla) {
-        try {
-            PreparedStatement ate = conn.prepareStatement("{CALL insertar_areas (?,?)}");
-            ate.setString(1, are.getId());
-            ate.setString(2, are.getDescripcion());
-            ate.executeUpdate();
-            
+    public static boolean Insertar(Area are, JTable tabla) {
+        try ( CallableStatement stmt = conn.prepareCall("{CALL insertar_cargos(?, ?)}")) {
+            String nuevoCodigo = GenerarCodigo(); 
+            stmt.setString(1, are.getDescripcionArea());
+            stmt.registerOutParameter(2, Types.VARCHAR);
+            int filasAfectadas = stmt.executeUpdate();
+
+            are.setCodigoArea(nuevoCodigo);
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            Object[] rowData = {are.getId(), are.getDescripcion()};
-            modelo.addRow(rowData);
-            // Actualiza la vista del JTable con el modelo de tabla actualizado
-            tabla.setModel(modelo);
-            ate.close();
+            modelo.addRow(new Object[]{are.getCodigoArea(), are.getDescripcionArea()});
+
+            return filasAfectadas > 0; 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        
     }
     
-    public static void Actualizar(Area are, JTable tabla){
-        try { 
-            CallableStatement ate = conn.prepareCall("{CALL actualizar_areas (?,?)}");
-            //defino los parametros de la bd para ser actualizado mediante el id
-            ate.setString(1, are.Id);
-            ate.setString(2, are.Descripcion);
+    public static void Actualizar(Area are, JTable tabla) {
+        try {
+            CallableStatement ate = conn.prepareCall("{CALL actualizar_cargos (?,?)}");
+            ate.setString(1, are.getCodigoArea());
+            ate.setString(2, are.getDescripcionArea());
             ate.executeUpdate();
-            
-            // Actualizamos la tabla
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0);
 
-                DatosArea.Mostrar(modelo);
-          
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0); 
+
+            DatosArea.Mostrar(modelo); 
             ate.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
