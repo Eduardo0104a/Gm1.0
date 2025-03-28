@@ -1,30 +1,41 @@
 package proyecto_gm.Categoria;
 
 public class Categoria {
-    protected int IdCategoria;
-    protected String  descripcion;
+    int idCat;
+    String codigoCat;  
+    String descripcionCat;
 
-    // Constructor
-    public Categoria(int idCategoria, String descripcion) {
-        this.IdCategoria = idCategoria;
-        this.descripcion = descripcion;
+    public Categoria() {   
+    }
+     
+    public Categoria(int idCat, String codigoCat, String descripcionCat) {
+        this.idCat = idCat;
+        this.codigoCat = codigoCat;
+        this.descripcionCat = descripcionCat;
     }
 
-    // Getters & Setters
-    public int getId() {
-        return IdCategoria;
+    public int getIdCat() {
+        return idCat;
     }
 
-    public void setId(int id) {
-        this.IdCategoria = id;
+    public void setIdCat(int idCat) {
+        this.idCat = idCat;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getCodigoCat() {
+        return codigoCat;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCodigoCat(String codigoCat) {
+        this.codigoCat = codigoCat;
     }
 
-}
+    public String getDescripcionCat() {
+        return descripcionCat;
+    }
+
+    public void setDescripcionCat(String descripcionCat) {
+        this.descripcionCat = descripcionCat;
+    }
+    
+    }

@@ -4,57 +4,73 @@
  */
 package proyecto_gm.Categoria;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.IOException;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import proyecto_gm.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
 
-/**
- *
- * @author USUARIO
- */
+
 public class frmCategoria extends javax.swing.JInternalFrame {
 
     Exportar obj;
-
     DefaultTableModel modelo;
     boolean esNuevo = false;
     public frmCategoria() {
         initComponents();
-        
-        // Modelo de la tabla
+        JTableHeader header = tblCategoria.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
         modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("DESCRIPCION");
         this.tblCategoria.setModel(modelo);
 
-        // Deshabilitar los botones Guardar y Deshacer
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
+        DatosCategoria.HabilitarCat(escritorio, closable);
 
-        DatosFacultades.bloquearCampos(jPanel1);
-        DatosCategoria.mostrarDatos(modelo);
+        DatosFacultades.bloquearCampos(escritorio);
+        DatosCategoria.MostrarCat(modelo);
     }
-    
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        escritorio = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCategoria = new javax.swing.JTable();
         btnDeshacer = new javax.swing.JButton();
@@ -64,7 +80,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         setTitle("CATEGORIA");
         setToolTipText("");
 
-        jPanel1.setBackground(new java.awt.Color(255, 248, 239));
+        escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -102,27 +118,24 @@ public class frmCategoria extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Exportar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
+                txtCodigoKeyTyped(evt);
             }
         });
 
         tblCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
 
@@ -137,18 +150,18 @@ public class frmCategoria extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAgregar)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
@@ -156,35 +169,39 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                         .addComponent(btnGuardar)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeshacer))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(jLabel2)
                         .addGap(29, 29, 29)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jButton1))
-            .addComponent(jScrollPane1)
+                .addComponent(btnExportar))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnExportar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,94 +210,100 @@ public class frmCategoria extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosCategoria.habilitarCampos(jPanel1);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
+        DatosCategoria.HabilitarCat(escritorio, true);
+        String codigo = DatosCategoria.GenerarCodigoCat();
+
+        if (codigo != null) {
+            txtCodigo.setText(codigo);
+            txtCodigo.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        txtDescripcion.requestFocus();
         esNuevo = true;
+        tblCategoria.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar campos
-        DatosCategoria.habilitarCampos(jPanel1);
-
-        JTextField[] cajas = {txtId, txtDescripcion};
-
-        //Editar campos
-        DatosCategoria.editar(tblCategoria, cajas);
+        JTextField[] cod = new JTextField[2];
+        cod[0] = txtCodigo;
+        cod[1] = txtDescripcion;
+        DatosCategoria.EditarCat(escritorio, tblCategoria, cod);
         esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosCategoria.eliminarDatos(tblCategoria);
-
-        // Bloquear campos
-        DatosCategoria.bloquearCampos(jPanel1);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
+        DatosCategoria.EliminarCat(tblCategoria);
+        DatosCategoria.HabilitarCat(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Categoria f = new Categoria( Integer.parseInt(txtId.getText()) , txtDescripcion.getText());
+        Categoria cat = new Categoria();
+
+        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+        try {
+            cat.setIdCat(Integer.parseInt(idTexto));
+        } catch (NumberFormatException e) {
+            cat.setIdCat(0);
+        }
+
+        cat.setDescripcionCat(txtDescripcion.getText());
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
+            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtCodigo.requestFocus();
             } else {
-                DatosCategoria.insertarDatos(f, tblCategoria);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                if (DatosCategoria.InsertarCat(cat, tblCategoria)) {
+                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosCategoria.LimpiarCat(escritorio);
+                    DatosCategoria.HabilitarCat(escritorio, false);
+                    tblCategoria.clearSelection();
+                    tblCategoria.setRowSelectionAllowed(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
             } else {
-                DatosCategoria.actualizarDatos(f, tblCategoria);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                cat.setCodigoCat(txtCodigo.getText());
+                DatosCategoria.ActualizarCat(cat, tblCategoria);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosCategoria.LimpiarCat(escritorio);
+                DatosCategoria.HabilitarCat(escritorio, false);
+                tblCategoria.clearSelection();
+                tblCategoria.setRowSelectionAllowed(true);
             }
         }
-        DatosFacultades.limpiarCampos(jPanel1);
-            DatosFacultades.bloquearCampos(jPanel1);
-            btnGuardar.setEnabled(false);
-            btnDeshacer.setEnabled(false);
-            btnEditar.setEnabled(true);
-            btnEliminar.setEnabled(true);
-            btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
+        if (txtCodigo.getText().length() >= 4) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
-    }//GEN-LAST:event_txtIdKeyTyped
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         // TODO add your handling code here:
         try{
             obj = new Exportar(); //mandamos a llamar a la clase
@@ -288,21 +311,13 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         } catch (IOException ex){
 
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosCategoria.limpiarCampos(jPanel1);
-        // Bloquear campos
-        //DatosFacultades.bloquearCampos(jPanel1);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-        DatosFacultades.bloquearCampos(jPanel1);
+        DatosCategoria.LimpiarCat(escritorio);
+        DatosCategoria.HabilitarCat(escritorio, false);
+        tblCategoria.clearSelection();
+        tblCategoria.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
@@ -319,14 +334,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCategoria;
+    private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
