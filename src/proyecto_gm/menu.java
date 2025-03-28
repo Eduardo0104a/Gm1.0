@@ -351,6 +351,11 @@ public class menu extends javax.swing.JFrame {
 
         subMenuModulos.setText("Modulos");
         subMenuModulos.setEnabled(false);
+        subMenuModulos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuModulosActionPerformed(evt);
+            }
+        });
         menuConfiguracion.add(subMenuModulos);
 
         subMenuDepartamentos.setText("Departamentos");
@@ -683,6 +688,10 @@ public class menu extends javax.swing.JFrame {
     private void subMenuCredencialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCredencialActionPerformed
         Abrircredencial();
     }//GEN-LAST:event_subMenuCredencialActionPerformed
+
+    private void subMenuModulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuModulosActionPerformed
+        Abrirmodulos();
+    }//GEN-LAST:event_subMenuModulosActionPerformed
 
    
     public static void main(String args[]) {

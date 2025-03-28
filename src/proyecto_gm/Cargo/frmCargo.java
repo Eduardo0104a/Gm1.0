@@ -11,8 +11,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import static proyecto_gm.Area.frmArea.tblArea;
-import static proyecto_gm.Cargo.DatosCargo.Limpiar;
 
 public class frmCargo extends javax.swing.JInternalFrame {
 
