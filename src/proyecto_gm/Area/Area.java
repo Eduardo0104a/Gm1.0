@@ -6,7 +6,7 @@ public class Area {
     String codigoArea;  
     String descripcionArea;
 
-     public Area() {   
+    public Area() {   
     }
      
     public Area(int idArea, String codigoArea, String descripcionArea) {

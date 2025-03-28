@@ -1,31 +1,41 @@
 package proyecto_gm.Tipo;
 
 public class Tipo {
-    String Id;
-    String Descripcion;
+    //Atributos
+    int idTipo;  
+    String codigoTipo;  
+    String descripcionTipo;
 
-    public Tipo(String Id, String Descripcion) {
-        this.Id = Id;
-        this.Descripcion = Descripcion;
+    public Tipo() {   
+    }
+     
+    public Tipo(int idTipo, String codigoTipo, String descripcionTipo) {
+        this.idTipo = idTipo;
+        this.codigoTipo = codigoTipo;
+        this.descripcionTipo = descripcionTipo;
+    }
+    
+    public int getIdTipo() {
+        return idTipo;
     }
 
-    public Tipo() {
-        
+    public void setIdTipo(int idTipo) {
+        this.idTipo = idTipo;
+    }
+    
+    public String getCodigoTipo(){
+        return codigoTipo;
     }
 
-    public String getId() {
-        return Id;
+    public void setCodigoTipo(String codigoTipo) {
+        this.codigoTipo = codigoTipo;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public String getDescripcionTipo() {
+        return descripcionTipo;
     }
 
-    public String getDescripcion() {
-        return Descripcion;
-    }
-
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
+    public void setDescripcionTipo(String descripcionTipo) {
+        this.descripcionTipo = descripcionTipo;
     }
 }

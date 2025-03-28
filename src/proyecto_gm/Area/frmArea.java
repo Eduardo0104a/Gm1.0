@@ -16,7 +16,6 @@ public class frmArea extends javax.swing.JInternalFrame {
   
     public frmArea() {
         initComponents();
-        // Personalizar header
         JTableHeader header = tblArea.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -38,9 +37,9 @@ public class frmArea extends javax.swing.JInternalFrame {
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.HabilitarArea(escritorio, false);
         
-        DatosArea.Mostrar(modelo);
+        DatosArea.MostrarArea(modelo);
         tblArea.setCellSelectionEnabled(false);
         tblArea.setRowSelectionAllowed(true);
     }  
@@ -217,8 +216,8 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosArea.Limpiar(rootPane);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.LimpiarArea(rootPane);
+        DatosArea.HabilitarArea(escritorio, false);
         tblArea.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblArea.setRowSelectionAllowed(true);
@@ -240,13 +239,13 @@ public class frmArea extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
             } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtCodigo.requestFocus();
             } else {
-                if (DatosArea.Insertar(are, tblArea)) {
+                if (DatosArea.InsertarArea(are, tblArea)) {
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosArea.Limpiar(escritorio);
-                    DatosArea.Habilitar(escritorio, false);
+                    DatosArea.LimpiarArea(escritorio);
+                    DatosArea.HabilitarArea(escritorio, false);
                     tblArea.clearSelection();
                     tblArea.setRowSelectionAllowed(true);
                 } else {
@@ -259,10 +258,10 @@ public class frmArea extends javax.swing.JInternalFrame {
                 return;
             } else {
                 are.setCodigoArea(txtCodigo.getText());
-                DatosArea.Actualizar(are, tblArea);
+                DatosArea.ActualizarArea(are, tblArea);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                DatosArea.Limpiar(escritorio);
-                DatosArea.Habilitar(escritorio, false);
+                DatosArea.LimpiarArea(escritorio);
+                DatosArea.HabilitarArea(escritorio, false);
                 tblArea.clearSelection();
                 tblArea.setRowSelectionAllowed(true);
             }
@@ -271,8 +270,8 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        DatosArea.Eliminar(tblArea);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.EliminarArea(tblArea);
+        DatosArea.HabilitarArea(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -280,7 +279,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         JTextField [] cod= new JTextField [2];
         cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
-        DatosArea.Editar(escritorio, tblArea, cod);
+        DatosArea.EditarArea(escritorio, tblArea, cod);
 
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -294,8 +293,8 @@ public class frmArea extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosArea.Habilitar(escritorio, true);
-        String codigo = DatosArea.GenerarCodigo();
+        DatosArea.HabilitarArea(escritorio, true);
+        String codigo = DatosArea.GenerarCodigoArea();
 
         if (codigo != null) {
             txtCodigo.setText(codigo);

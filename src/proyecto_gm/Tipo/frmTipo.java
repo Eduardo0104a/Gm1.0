@@ -1,9 +1,15 @@
 package proyecto_gm.Tipo;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.JTableHeader;
 
 
 public class frmTipo extends javax.swing.JInternalFrame {
@@ -11,15 +17,31 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
     public frmTipo() {
         initComponents();
+        JTableHeader header = tblTipo.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
         DefaultTableModel modelo = (DefaultTableModel) tblTipo.getModel();
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosTipo.Habilitar(escritorio, false);
-        DatosTipo.Mostrar(modelo);
-        // Quitar la edicion de las celdas
+        DatosTipo.HabilitarTipo(escritorio, false);
+        DatosTipo.MostrarTipo(modelo);
+        
         tblTipo.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblTipo.setRowSelectionAllowed(true);
     }
     
@@ -34,7 +56,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -81,9 +103,9 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
+                txtCodigoKeyTyped(evt);
             }
         });
 
@@ -105,6 +127,8 @@ public class frmTipo extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblTipo.setRowHeight(25);
+        tblTipo.setSelectionBackground(new java.awt.Color(153, 153, 153));
         jScrollPane1.setViewportView(tblTipo);
         if (tblTipo.getColumnModel().getColumnCount() > 0) {
             tblTipo.getColumnModel().getColumn(0).setResizable(false);
@@ -130,7 +154,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -166,7 +190,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -190,92 +214,94 @@ public class frmTipo extends javax.swing.JInternalFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         JTextField [] cod= new JTextField [2];
-        cod[0] = txtId;
+        cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
-        DatosTipo.Editar(escritorio, tblTipo, cod);
+        DatosTipo.EditarTipo(escritorio, tblTipo, cod);
 
         esNuevo=false;
-
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosTipo.Eliminar(tblTipo);
-        DatosTipo.Habilitar(escritorio, false);
+        DatosTipo.EliminarTipo(tblTipo);
+        DatosTipo.HabilitarTipo(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        
-        Tipo tip= new Tipo();
-        tip.setId(txtId.getText());
-        tip.setDescripcion(txtDescripcion.getText());
-        
-        //verificar si debo ingresar o actualizar
+        Tipo tip = new Tipo();
+        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+        try {
+            tip.setIdTipo(Integer.parseInt(idTexto));
+        } catch (NumberFormatException e) {
+            tip.setIdTipo(0);
+        }
+
+        tip.setDescripcionTipo(txtDescripcion.getText());
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            }
-            
-            else {
-                    DatosTipo.Insertar(tip, tblTipo);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosTipo.Limpiar(escritorio);
-                    DatosTipo.Habilitar(escritorio, false);
-                    tblTipo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblTipo.setRowSelectionAllowed(true);
-                }
-            
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtCodigo.requestFocus();
             } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
-                    DatosTipo.Actualizar(tip, tblTipo);
+                if (DatosTipo.InsertarTipo(tip, tblTipo)) {
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosTipo.Limpiar(escritorio);
-                    DatosTipo.Habilitar(escritorio, false);
+                    DatosTipo.LimpiarTipo(escritorio);
+                    DatosTipo.HabilitarTipo(escritorio, false);
                     tblTipo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
                     tblTipo.setRowSelectionAllowed(true);
-        }
-  
-        }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else {
+                tip.setCodigoTipo(txtCodigo.getText());
+                DatosTipo.ActualizarTipo(tip, tblTipo);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosTipo.LimpiarTipo(escritorio);
+                DatosTipo.HabilitarTipo(escritorio, false);
+                tblTipo.clearSelection();
+                tblTipo.setRowSelectionAllowed(true);
+            }
+        }             
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosTipo.Limpiar(rootPane);
-        DatosTipo.Habilitar(escritorio, false);
+        DatosTipo.LimpiarTipo(rootPane);
+        DatosTipo.HabilitarTipo(escritorio, false);
         tblTipo.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblTipo.setRowSelectionAllowed(true);
+        
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
+        if (txtCodigo.getText().length() >= 4) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
-    }//GEN-LAST:event_txtIdKeyTyped
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosTipo.Habilitar(escritorio, true);
-        String codigo = DatosTipo.GenerarCodigo("tiposempleados", "TE" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
+        DatosTipo.HabilitarTipo(escritorio, true);
+        String codigo = DatosTipo.GenerarCodigoTipo();
+
+        if (codigo != null) {
+            txtCodigo.setText(codigo);
+            txtCodigo.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         txtDescripcion.requestFocus();
-        esNuevo=true;
+        esNuevo = true;
         tblTipo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -291,7 +317,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblTipo;
+    private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
