@@ -66,7 +66,7 @@ public class DatosArea {
     }
 
     
-public static boolean InsertarArea(Area are, JTable tabla) {
+    public static boolean InsertarArea(Area are, JTable tabla) {
         try ( CallableStatement stmt = conn.prepareCall("{CALL insertar_areas(?, ?)}")) {
             String nuevoCodigo = GenerarCodigoArea();
             stmt.setString(1, are.getDescripcionArea());

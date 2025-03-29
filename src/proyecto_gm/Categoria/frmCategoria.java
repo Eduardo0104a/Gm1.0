@@ -23,7 +23,6 @@ import proyecto_gm.Facultades.DatosFacultades;
 public class frmCategoria extends javax.swing.JInternalFrame {
 
     Exportar obj;
-    DefaultTableModel modelo;
     boolean esNuevo = false;
     public frmCategoria() {
         initComponents();
@@ -44,17 +43,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                 return this;
             }
         });
-        modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("DESCRIPCION");
-        this.tblCategoria.setModel(modelo);
-
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        DatosCategoria.HabilitarCat(escritorio, closable);
-
-        DatosFacultades.bloquearCampos(escritorio);
+        DefaultTableModel modelo = (DefaultTableModel) tblCategoria.getModel();
+        
+        
+        DatosCategoria.HabilitarCat(escritorio, false);
         DatosCategoria.MostrarCat(modelo);
+        
+        tblCategoria.setCellSelectionEnabled(false);
+        tblCategoria.setRowSelectionAllowed(true);
     }
     
     @SuppressWarnings("unchecked")
@@ -138,9 +134,17 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-
+                "ID", "DESCRIPCIÓN"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblCategoria);
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
@@ -252,7 +256,6 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Categoria cat = new Categoria();
-
         String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
         try {
             cat.setIdCat(Integer.parseInt(idTexto));
@@ -266,7 +269,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
             } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtCodigo.requestFocus();
             } else {
                 if (DatosCategoria.InsertarCat(cat, tblCategoria)) {
@@ -292,7 +295,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                 tblCategoria.clearSelection();
                 tblCategoria.setRowSelectionAllowed(true);
             }
-        }
+        }    
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -314,9 +317,10 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        DatosCategoria.LimpiarCat(escritorio);
+        DatosCategoria.LimpiarCat(rootPane);
         DatosCategoria.HabilitarCat(escritorio, false);
         tblCategoria.clearSelection();
+        // Habilitamos la seleccion de filas de la tabla
         tblCategoria.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 

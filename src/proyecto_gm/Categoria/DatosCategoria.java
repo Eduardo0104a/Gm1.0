@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-
 public class DatosCategoria {
 
     static Connection conn = ConexionBD.getConnection();
@@ -75,7 +74,10 @@ public class DatosCategoria {
 
             cat.setCodigoCat(nuevoCodigo);
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.addRow(new Object[]{cat.getCodigoCat(), cat.getDescripcionCat()});
+            modelo.addRow(new Object[]{
+                cat.getCodigoCat(), 
+                cat.getDescripcionCat()
+            });
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -121,16 +123,22 @@ public class DatosCategoria {
     }
 
     public static void HabilitarCat(Container contenedor, boolean bloquear) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton) {
-                String button = ((JButton) componente).getName();
+    if (contenedor == null) return;
+
+    for (Component componente : contenedor.getComponents()) {
+        if (componente instanceof JTextField) {
+            ((JTextField) componente).setEnabled(bloquear);
+        } else if (componente instanceof JButton) {
+            String button = ((JButton) componente).getName();
+            if (button != null) {
+                // Se habilitan solo cuando bloquear es true
                 boolean activar = button.equals("guardar") || button.equals("deshacer");
-                ((JButton) componente).setEnabled(activar == bloquear);
+                ((JButton) componente).setEnabled(bloquear && activar);
             }
         }
     }
+}
+
 
     public static boolean EditarCat(Container contenedor, JTable tabla, JTextField[] campos) {
         int fila = tabla.getSelectedRow();
@@ -139,7 +147,7 @@ public class DatosCategoria {
             for (int i = 0; i < campos.length; i++) {
                 campos[i].setText(tabla.getModel().getValueAt(fila, i).toString());
             }
-            campos[0].setEnabled(false); 
+            campos[0].setEnabled(false);
             campos[1].requestFocus();
             return true;
         } else {
@@ -148,4 +156,3 @@ public class DatosCategoria {
         }
     }
 }
-

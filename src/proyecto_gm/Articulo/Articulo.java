@@ -11,14 +11,12 @@ public class Articulo {
     protected String categoriadescripcion;
     protected String marcadescripcion;
 
-    // Constructor
     public Articulo(int idArticulo, String descripcion, int idCategoria) {
         this.IdArticulo = idArticulo;
         this.descripcion = descripcion;
         this.IdCategoria = idCategoria;
     }
 
-    //get y set
     public int getIdArticulo() {
         return IdArticulo;
     }
@@ -43,44 +41,26 @@ public class Articulo {
         this.IdCategoria = idCategoria;
     }
 
-    /**
-     * @return the IdMarca
-     */
     public int getIdMarca() {
         return IdMarca;
     }
 
-    /**
-     * @param IdMarca the IdMarca to set
-     */
     public void setIdMarca(int IdMarca) {
         this.IdMarca = IdMarca;
     }
 
-    /**
-     * @return the caracteristicas
-     */
     public String getCaracteristicas() {
         return caracteristicas;
     }
 
-    /**
-     * @param caracteristicas the caracteristicas to set
-     */
     public void setCaracteristicas(String caracteristicas) {
         this.caracteristicas = caracteristicas;
     }
 
-    /**
-     * @return the cantidad
-     */
     public int getCantidad() {
         return cantidad;
     }
 
-    /**
-     * @param cantidad the cantidad to set
-     */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }

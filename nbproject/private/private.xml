@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>src/proyecto_gm/credencial/frmCredencial.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>311</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Tipo/DatosTipo.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Tipo/Tipo.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Articulo/frmArticulo.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Categoria/Categoria.java</file>
             <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Area/frmArea.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Area/DatosArea.java</file>
-            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Tipo/frmTipo.java</file>
-=======
-            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/Proyecto1.0/Gm1.0/Gm1.0/src/proyecto_gm/Cargo/frmCargo.java</file>
-            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/Proyecto1.0/Gm1.0/Gm1.0/src/proyecto_gm/Categoria/Categoria.java</file>
-            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/Proyecto1.0/Gm1.0/Gm1.0/src/proyecto_gm/Categoria/frmCategoria.java</file>
-            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/Proyecto1.0/Gm1.0/Gm1.0/src/proyecto_gm/Categoria/DatosCategoria.java</file>
-            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/Proyecto1.0/Gm1.0/Gm1.0/src/proyecto_gm/Area/DatosArea.java</file>
->>>>>>> 763259fb6e1a5afb230dfd03b630e3dad5d13cfb
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Categoria/DatosCategoria.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Articulo/Articulo.java</file>
+            <file>file:/C:/Users/EduardoPC/Documents/NetBeansProjects/Gm1.0/src/proyecto_gm/Articulo/DatosArticulo.java</file>
         </group>
     </open-files>
 </project-private>
