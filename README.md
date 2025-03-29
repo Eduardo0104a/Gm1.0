@@ -1,9 +1,9 @@
 # Gm1.0
-Cambios realizado por Eduardo Ayala:
--cambios en el paquete de Area (Funcionando Actualmente)
--cambios en el paquete de Cargo (Funcionando Actualmente)
--cambios en el paquete de Categorias (Funcionando Actualmente)
--cambios en el paquete de Tipo (Funcionando Actualmente)
-(Si encuentra algun error en alguno de los cambios anteriores informarme para buscarle solución)
+Cambios realizado por Eduardo Ayala: <br>
+-cambios en el paquete de Area (Funcionando Actualmente)<br>
+-cambios en el paquete de Cargo (Funcionando Actualmente)<br>
+-cambios en el paquete de Categorias (Funcionando Actualmente)<br>
+-cambios en el paquete de Tipo (Funcionando Actualmente)<br>
+(Si encuentra algun error en alguno de los cambios anteriores informarme para buscarle solución)<br>
 
 -Actualmente me encuentro realizando cambios en el paquete de Articulo. 
