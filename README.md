@@ -10,3 +10,5 @@ Cambios realizado por Eduardo Ayala: <br>
 
 Cambios realizado por Emerson Apaza:
 - Cambios en el paquete Carrera (Funciona)
+- Cambios en el paquete Instituciones (Funciona)
+- Cambios en el paquete Facultades (Funciona)
