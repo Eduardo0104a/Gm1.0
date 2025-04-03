@@ -33,35 +33,44 @@ public class DatosCarrera {
             JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-        public static void insertarDatos(Carreras carrera, JTable tabla) {
-        try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carreras(?, ?) }");
 
+    public static void insertarDatos(Carreras carrera, JTable tabla) {
+        try {
             if (carrera.getId().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Convierte el ID a entero antes de enviarlo
+            // Convertir el ID a entero antes de enviarlo
             int idCarrera = Integer.parseInt(carrera.getId());
 
+            // Preparar la llamada al procedimiento almacenado para insertar la carrera
+            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carreras(?, ?) }");
             cstmt.setInt(1, idCarrera);
             cstmt.setString(2, carrera.getDescripcion());
-            cstmt.execute(); // Inserta los datos en la BD
+            cstmt.execute();
+            cstmt.close(); // Cerramos la conexión después de insertar
 
-            // Recuperamos la información para mostrar el código generado (codigoCarrera)
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT codigoCarrera, descripcion FROM carreras WHERE IdCarrera = " + idCarrera);
+            // Llamar al procedimiento almacenado para recuperar los datos recién insertados
+            CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_carrera(?) }");
+            cstmt2.setInt(1, idCarrera);
+
+            // Ejecutar la consulta
+            ResultSet rs = cstmt2.executeQuery();
 
             if (rs.next()) {
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                 Object[] rowData = {
-                    rs.getString("codigoCarrera"), // Se muestra codigoCarrera en lugar de IdCarrera
+                    rs.getString("codigoCarrera"), // Se muestra el código generado
                     rs.getString("descripcion")
                 };
                 modelo.addRow(rowData);
                 tabla.setModel(modelo);
             }
+
+            // Cerrar recursos
+            rs.close();
+            cstmt2.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -94,8 +103,6 @@ public class DatosCarrera {
         }
     }
 
-            
-            
 //    public static void guardarCambios(Carreras carrera, JTable tabla) {
 //        try {
 //            PreparedStatement stmt = conn.prepareStatement("CALL listar_carreras()");
@@ -144,7 +151,6 @@ public class DatosCarrera {
         }
     }
 
-
     public static void editar(JTable tabla, JTextField[] cajas) {
         // Obtener el indice de la fila seleccionada
         int fila = tabla.getSelectedRow();
@@ -162,6 +168,5 @@ public class DatosCarrera {
         }
 
     }
-    
-  
+
 }

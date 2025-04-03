@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Facultades;
 
 import java.awt.Component;
@@ -14,10 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-/**
- *
- * @author Mariluz
- */
 public class DatosFacultades {
 
     static Connection conn = ConexionBD.getConnection();
@@ -39,7 +31,7 @@ public class DatosFacultades {
             if (componente instanceof JTextField) {
                 ((JTextField) componente).setEditable(false);
             } else if (componente instanceof Container) {
-                limpiarCampos((Container) componente);
+                bloquearCampos((Container) componente);
             }
         }
     }
@@ -50,14 +42,13 @@ public class DatosFacultades {
             if (componente instanceof JTextField) {
                 ((JTextField) componente).setEditable(true);
             } else if (componente instanceof Container) {
-                limpiarCampos((Container) componente);
+                habilitarCampos((Container) componente);
             }
         }
     }
 
-    // Boton editar
+    // Botón editar
     public static void editar(JTable tabla, JTextField[] cajas) {
-        // Obtener el indice de la fila seleccionada
         int fila = tabla.getSelectedRow();
 
         if (fila >= 0) {
@@ -71,35 +62,53 @@ public class DatosFacultades {
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
         }
-
     }
 
-//metodo para insertar datos (nuevo cambio)
-    public static void insertarDatos(Facultades carrera, JTable tabla) {
+    // Insertar datos
+    public static void insertarDatos(Facultades facultad, JTable tabla) {
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_facultades(?, ?) }");
-            if (carrera.getId().equals("")) {
+            // Verificar si los campos necesarios están vacíos
+            if (facultad.getId().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            cstmt.setString(1, carrera.getId());
-            cstmt.setString(2, carrera.getDescripcion());
-            cstmt.execute(); // se inserta los datos a la BD
+            // Preparar la llamada al procedimiento almacenado para insertar datos
+            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_facultades(?, ?) }");
+            cstmt.setString(1, facultad.getId());
+            cstmt.setString(2, facultad.getDescripcion());
+            cstmt.execute(); // Ejecuta el procedimiento almacenado para insertar los datos
+            cstmt.close(); // Cerrar después de la inserción
 
-            // Actualiza el modelo de tabla con los nuevos datos
+            // Preparar la llamada al procedimiento almacenado para obtener la facultad
+            CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_facultad(?) }");
+            cstmt2.setString(1, facultad.getId()); // Usamos el ID de la facultad
 
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosFacultades.mostrarDatos(modelo);
+            // Ejecutar la consulta
+            ResultSet rs = cstmt2.executeQuery(); // Ahora usamos `cstmt2.executeQuery()`
 
-            // Actualiza la vista del JTable con el modelo de tabla actualizado
-//            tabla.setModel(modelo);
+            if (rs.next()) {
+                // Obtener el modelo de la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
+                // Crear una fila con los datos de la facultad recién insertada
+                Object[] rowData = {
+                    rs.getString("codigoFacultad"),
+                    rs.getString("descripcion")
+                };
+
+                // Agregar la nueva fila al modelo de la tabla
+                modelo.addRow(rowData);
+                tabla.setModel(modelo);  // Actualizar el modelo del JTable
+            }
+
+            // Cerrar recursos
+            rs.close();
+            cstmt2.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     // Mostrar datos
@@ -108,70 +117,74 @@ public class DatosFacultades {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_facultades()");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("descripcion")};
+                Object[] row = new Object[]{
+                    rs.getString("codigoFacultad"),
+                    rs.getString("descripcion")
+                };
                 modelo.addRow(row);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     // Actualizar datos
     public static void actualizarDatos(Facultades facultad, JTable tabla) {
         try {
+            // Llamada al procedimiento almacenado para actualizar los datos
             CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_facultades(?, ?) }");
             cstmt.setString(1, facultad.getId());
             cstmt.setString(2, facultad.getDescripcion());
+            cstmt.execute(); // Ejecuta la actualización en la base de datos
 
-            
-            cstmt.execute(); // se actualiza los datos en la BD
-
-            // Actualizamos la tabla
+            // Limpiar y actualizar la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosFacultades.mostrarDatos(modelo);
+            modelo.setRowCount(0); // Limpiar la tabla
 
+            // Preparar la consulta para listar las facultades
+            PreparedStatement stmt = conn.prepareStatement("CALL listar_facultades()"); // Recargar datos
+            ResultSet rs = stmt.executeQuery();
 
-        } catch (HeadlessException | SQLException ex) {
+            while (rs.next()) {
+                // Crear una fila con los datos de la facultad
+                Object[] row = new Object[]{
+                    rs.getString("codigoFacultad"),
+                    rs.getString("descripcion")
+                };
+                modelo.addRow(row); // Agregar la fila a la tabla
+            }
+
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // Eliminar datos
     public static void eliminarDatos(JTable tabla) {
-        try {
-            // Obtener el indice de la fila seleccionada
-            int fila = tabla.getSelectedRow();
+        int fila = tabla.getSelectedRow();
 
-            if (fila >= 0) {
-                String[] options = {"Sí", "No", "Cancelar"};
-                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-                if (opcion == JOptionPane.YES_OPTION) {
-                    // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
+        if (fila >= 0) {
+            String id = tabla.getModel().getValueAt(fila, 0).toString(); // Se asume que el ID está en la primera columna
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-                    // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_facultades(?) }");
-                    stmt.setString(1, id);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_facultades(?) }")) {
+                    stmt.setString(1, id); // Se usa setString porque el ID es VARCHAR
                     stmt.execute();
 
-                    // Actualizar el JTable
-                    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-                    model.removeRow(fila);
-                    // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                    // Eliminar la fila de la tabla
+                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
+                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
             }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
         }
-
     }
 
-    // Boton Guardar
+    // Guardar cambios
     public static void guardarCambios(Facultades facultad, JTable tabla) {
         try {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_facultades()");
