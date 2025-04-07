@@ -13,3 +13,4 @@ Cambios realizado por Emerson Apaza:
 - Cambios en el paquete Instituciones (Funciona)
 - Cambios en el paquete Facultades (Funciona)
 - Cambios en el paquete Departamentos (Funciona)
+- Cambios en el paquete Proveedores (Funciona)
