@@ -1,26 +1,27 @@
-
 package proyecto_gm.Proveedores;
 
 import java.awt.Toolkit;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
+import proyecto_gm.Departamentos.Departamentos;
+import static proyecto_gm.Proveedores.DatosProveedores.llenarComboBoxDepartamentos;
 
 public class frmProveedores extends javax.swing.JInternalFrame {
-    
-    boolean esNuevo=false;
 
-    
+    boolean esNuevo = false;
+
     public frmProveedores() {
         initComponents();
+        //llenarComboBoxDepartamentos(cboModulo2); // Llenar el JComboBox al abrir la ventana
         DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
-        
-        
+        DatosProveedores.llenarComboBoxDepartamentos(cboModulo2);
+
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosProveedores.Habilitar(escritorio, false);
-        
+
         DatosProveedores.Mostrar(modelo);
         // Quitar la edicion de las celdas
         tblProveedores.setCellSelectionEnabled(false);
@@ -52,6 +53,8 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         txtRuc = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProveedores = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        cboModulo2 = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -152,11 +155,11 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Nombres", "Direccion", "Correo", "Telefono", "Ruc"
+                "Id", "Modulo", "Nombres", "Direccion", "Correo", "Telefono", "Ruc"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -165,6 +168,14 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         });
         tblProveedores.setFocusable(false);
         jScrollPane1.setViewportView(tblProveedores);
+
+        jLabel7.setText("Departamento:");
+
+        cboModulo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboModulo2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -184,33 +195,43 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDeshacer))
                     .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, escritorioLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(escritorioLayout.createSequentialGroup()
                             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(escritorioLayout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel6)
+                                    .addGap(44, 44, 44)
+                                    .addComponent(txtRuc))
+                                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(50, 50, 50)
+                                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(escritorioLayout.createSequentialGroup()
+                                    .addGap(12, 12, 12)
                                     .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(escritorioLayout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cboModulo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGap(29, 29, 29)
                             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4))
-                            .addGap(18, 18, 18)
-                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(24, 24, 24)
-                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6))
-                            .addGap(12, 12, 12)
-                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                                .addComponent(txtRuc)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(escritorioLayout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(escritorioLayout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
@@ -229,19 +250,25 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addComponent(cboModulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -252,7 +279,9 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -268,71 +297,71 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
-        Proveedores pro= new Proveedores();
-        pro.setId(txtId.getText());
-        pro.setNombres(txtNombres.getText());
-        pro.setDireccion(txtDireccion.getText());
-        pro.setCorreo(txtCorreo.getText());
-        pro.setTelefono(txtTelefono.getText());
-        pro.setRuc(txtRuc.getText());
-        
-        //verificar si debo ingresar o actualizar
+
+        String opcion = DatosProveedores.Capturar(cboModulo2);
+
+        // Creamos un objeto tipo Proveedores
+        Proveedores pro = new Proveedores(
+                txtId.getText(), // IdProveedor
+                txtNombres.getText(), // Nombres
+                txtDireccion.getText(), // Direccion
+                txtCorreo.getText(), // Correo
+                txtTelefono.getText(), // Telefono
+                txtRuc.getText(), // Ruc
+                opcion // departamentoId
+        );
+        /*
+        // Validaciones
+        if (txtId.getText().isEmpty() || txtNombres.getText().isEmpty() || txtDireccion.getText().isEmpty()
+                || txtCorreo.getText().isEmpty() || txtTelefono.getText().isEmpty() || txtRuc.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        }
+
+        if (!txtCorreo.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            JOptionPane.showMessageDialog(null, "El formato del correo es el siguiente: alguien@gmail.com. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtCorreo.requestFocus();
+            return;
+        }
+
+        if (txtTelefono.getText().length() != 9) {
+            JOptionPane.showMessageDialog(null, "El teléfono debe contener 9 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtTelefono.requestFocus();
+            return;
+        }
+
+        if (txtRuc.getText().length() != 11) {
+            JOptionPane.showMessageDialog(null, "El RUC debe contener 11 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtRuc.requestFocus();
+            return;
+        }
+         */
+        System.out.println("¿Es nuevo?: " + esNuevo);
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtNombres.getText().isEmpty() || txtDireccion.getText().isEmpty()
-            || txtCorreo.getText().isEmpty()|| txtTelefono.getText().isEmpty()|| txtRuc.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            }
-            else if(!txtCorreo.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
-                
-                JOptionPane.showMessageDialog(null, "El formato del correo es el siguente: alguien@gmail.com. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtCorreo.requestFocus();
-            }
-            
-            else if(txtTelefono.getText().length() != 9){
-                
-                JOptionPane.showMessageDialog(null, "El telefono debe contener 9 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtTelefono.requestFocus();
-            }
-            else if(txtRuc.getText().length() != 11){
-                
-                JOptionPane.showMessageDialog(null, "El Ruc debe contener 11 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtRuc.requestFocus();
-            }
-            else {
-                DatosProveedores.Insertar(pro, tblProveedores);
+            System.out.println("Intentando insertar proveedor...");
+            if (DatosProveedores.InsertarDatos(pro, tblProveedores)) {
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosProveedores.Limpiar(escritorio);
-                DatosProveedores.Habilitar(escritorio, false);
-                    tblProveedores.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblProveedores.setRowSelectionAllowed(true);
-            }
-            
-        } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtNombres.getText().isEmpty() || txtDireccion.getText().isEmpty()
-            || txtCorreo.getText().isEmpty()|| txtTelefono.getText().isEmpty()|| txtRuc.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
+                System.out.println("ID Departamento capturado: " + opcion);
             } else {
-                DatosProveedores.Actualizar(pro, tblProveedores);
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } else {
+            pro.setIdProveedor(txtId.getText());
+            if (DatosProveedores.Actualizar(pro, tblProveedores, cboModulo2)) {
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                DatosProveedores.Limpiar(escritorio);
-                DatosProveedores.Habilitar(escritorio, false);
-                    tblProveedores.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblProveedores.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
         }
+
+        // Limpiar e inhabilitar campos
+        DatosProveedores.Limpiar(escritorio);
+        DatosProveedores.Habilitar(escritorio, false);
+        tblProveedores.clearSelection();
+        tblProveedores.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -343,26 +372,27 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        JTextField [] cod= new JTextField [6];
+        // Crear el arreglo con los campos de texto
+        JTextField[] cod = new JTextField[6];
         cod[0] = txtId;
-        cod[1] = txtNombres;
-        cod[2] = txtDireccion;
-        cod[3] = txtCorreo;
-        cod[4] = txtTelefono;
+        cod[1] = txtDireccion;
+        cod[2] = txtTelefono;
+        cod[3] = txtNombres;
+        cod[4] = txtCorreo;
         cod[5] = txtRuc;
-        DatosProveedores.Editar(escritorio, tblProveedores, cod);
 
-        esNuevo=false;
+        // Crear el arreglo con el ComboBox de departamento
+        JComboBox[] combos = {cboModulo2}; // Pasamos solo el ComboBox
+
+        // Llamar al método Editar pasándole el ComboBox junto con los campos de texto
+        DatosProveedores.Editar(escritorio, tblProveedores, cod, combos);
+
+        esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       DatosProveedores.Habilitar(escritorio, true);
-       String codigo = DatosProveedores.GenerarCodigo("proveedores", "PO" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
-        txtNombres.requestFocus();
-       esNuevo=true;
-       tblProveedores.setRowSelectionAllowed(false);
+        DatosProveedores.Habilitar(escritorio, true);
+        esNuevo = true;
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
@@ -395,13 +425,17 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtNombresKeyTyped
 
     private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtDireccionKeyTyped
+
+    private void cboModulo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboModulo2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboModulo2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -410,6 +444,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cboModulo2;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -417,6 +452,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProveedores;
     private javax.swing.JTextField txtCorreo;
@@ -427,5 +463,4 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
- 
 }

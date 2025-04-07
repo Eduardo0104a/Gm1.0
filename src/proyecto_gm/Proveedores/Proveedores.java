@@ -1,31 +1,29 @@
 package proyecto_gm.Proveedores;
 
+public class Proveedores {
+    //Atributos
 
-    public class Proveedores {
-        //Atributos
-    String Id, Nombres,Direccion, Correo, Telefono, Ruc;
+    String IdProveedor, Nombres, Direccion, Correo, Telefono, Ruc, departamentoId;
 
-    // Constructor
-    public Proveedores(String Id, String Nombres, String Direccion, String Correo, String Telefono, String Ruc) {
-        this.Id = Id;
+    public Proveedores(String IdProveedor, String Nombres, String Direccion, String Correo, String Telefono, String Ruc, String departamentoId) {
+        this.IdProveedor = IdProveedor;
         this.Nombres = Nombres;
         this.Direccion = Direccion;
         this.Correo = Correo;
         this.Telefono = Telefono;
-        this.Ruc=Ruc;
+        this.Ruc = Ruc;
+        this.departamentoId = departamentoId;
     }
+
     public Proveedores() {
-        
     }
 
-    // Getters & Setters
-
-    public String getId() {
-        return Id;
+    public String getIdProveedor() {
+        return IdProveedor;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setIdProveedor(String IdProveedor) {
+        this.IdProveedor = IdProveedor;
     }
 
     public String getNombres() {
@@ -67,5 +65,13 @@ package proyecto_gm.Proveedores;
     public void setRuc(String Ruc) {
         this.Ruc = Ruc;
     }
-    
+
+    public String getDepartamentoId() {
+        return departamentoId;
     }
+
+    public void setDepartamentoId(String departamentoId) {
+        this.departamentoId = departamentoId;
+    }
+
+}

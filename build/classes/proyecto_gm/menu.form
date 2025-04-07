@@ -271,8 +271,10 @@
             <MenuItem class="javax.swing.JMenuItem" name="subMenuDepartamentos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Departamentos"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuDepartamentosActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="subMenuCredencial">
               <Properties>
