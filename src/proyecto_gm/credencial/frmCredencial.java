@@ -4,14 +4,21 @@
  */
 package proyecto_gm.credencial;
 
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import static proyecto_gm.Facultades.DatosFacultades.editar;
 
 /**
  *
  * @author pc_sistemas2022
  */
 public class frmCredencial extends javax.swing.JInternalFrame {
-private boolean esNuevo = false;
+
+    private boolean esNuevo = false;
+    private String idSeleccionado = "";
+
     /**
      * Creates new form frmCredencial
      */
@@ -125,41 +132,39 @@ private boolean esNuevo = false;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
+                .addComponent(btnAgregar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeshacer)
+                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 26, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(72, 72, 72))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(35, 35, 35))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(72, 72, 72))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtAlias)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                            .addComponent(txtClave)
-                            .addComponent(txtCorreo))
-                        .addGap(215, 215, 215))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)
-                        .addContainerGap())))
-            .addComponent(jScrollPane1)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(40, 40, 40)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtAlias)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                    .addComponent(txtClave)
+                    .addComponent(txtCorreo))
+                .addGap(215, 215, 215))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,27 +198,29 @@ private boolean esNuevo = false;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void Limpiar(){
-    txtCorreo.setText("");
-    txtClave.setText("");
-    txtAlias.setText("");
-    txtDescripcion.setText("");
-    
-}
+private void Limpiar() {
+        txtCorreo.setText("");
+        txtClave.setText("");
+        txtAlias.setText("");
+        txtDescripcion.setText("");
 
-private void Habilitar(boolean estado){
-    txtCorreo.setEnabled(estado);
-    txtClave.setEnabled(estado);
-    txtAlias.setEnabled(estado);
-    txtDescripcion.setEnabled(estado);
-}
+    }
+
+    private void Habilitar(boolean estado) {
+        txtCorreo.setEnabled(estado);
+        txtClave.setEnabled(estado);
+        txtAlias.setEnabled(estado);
+        txtDescripcion.setEnabled(estado);
+    }
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-/*
-        DatosContacto.LimpiarCampos(escritorio);
 
-        DatosContacto.BloquearCampos(escritorio);
-        */
+        txtCorreo.setText("");
+        txtClave.setText("");
+        txtAlias.setText("");
+        txtDescripcion.setText("");
+
+        //DatosCredencial.Bloquear(escritorio);
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         btnEditar.setEnabled(true);
@@ -223,22 +230,22 @@ private void Habilitar(boolean estado){
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
-        
-        
-        try{
+
+        try {
             Credencial c = new Credencial();
             c.setCorreo(txtCorreo.getText());
             c.setClave(txtClave.getText());
             c.setAlias(txtAlias.getText());
             c.setDescripcion(txtDescripcion.getText());
-            if(esNuevo){
+            if (esNuevo) {
                 DatosCredencial.Insertar(c, tblContacto);
-            }else{
-                DatosCredencial.Actualizar(c, tblContacto);
+            } else {
+                c.setIdCredencial(idSeleccionado); // importante para actualizar correctamente
+                DatosCredencial.actualizarDatosCredencial(c, tblContacto);
             }
 
-              Limpiar();
+            Limpiar();
+            idSeleccionado = "";
             Habilitar(false);
             btnGuardar.setEnabled(false);
             btnDeshacer.setEnabled(false);
@@ -246,122 +253,70 @@ private void Habilitar(boolean estado){
             btnEliminar.setEnabled(true);
             btnAgregar.setEnabled(true);
             esNuevo = false;
-        }catch(Exception ex){
-        
-        }
-        /*
-     
+        } catch (Exception ex) {
 
-        if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtTelefono.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosContacto.insertarDatos(f, tblContacto);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            }
-        } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtTelefono.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosContacto.actualizarDatos(f, tblContacto);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            }
         }
-        //        DatosFacultades.limpiarCampos(jPanel1);
-        //        DatosFacultades.bloquearCampos(jPanel1);
-
-        
-        DatosContacto.LimpiarCampos(escritorio);
-        DatosContacto.BloquearCampos(escritorio);
-        */
-      
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        /*
-        DatosContacto.eliminarDatos(tblContacto);
-        txtId.setEnabled(false);
-        txtNombre.setEnabled(false);
-        txtFecha.setEnabled(false);
-        txtPersonas.setEnabled(false);
-        txtEmpresa.setEnabled(false);
-        txtCargo.setEnabled(false);
+        // Llamada al método para eliminar la fila seleccionada
+        DatosCredencial.eliminarDatos(tblContacto);
+
+        // Opcional: Desactivar campos de entrada después de eliminar la fila
         txtCorreo.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        txtDireccion.setEnabled(false);
-        txtNota.setEnabled(false);
-        cboDepartamento.setEnabled(false);
+        txtClave.setEnabled(false);
+        txtAlias.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+
+        // Desactivar botones después de la eliminación
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-*/
+        btnEditar.setEnabled(true);  // Puedes mantener habilitado el botón Editar si deseas
+
+        // Activar el botón de Agregar nuevamente, si es necesario
+        btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
-    private int id;
+    public int id;
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        // Habilitamos los campos:
-        
-        esNuevo = false;
-        Habilitar(true);
-        DefaultTableModel modelo = (DefaultTableModel) this.tblContacto.getModel();
-        id = 0; String correo = "", clave = "", alias = "", descripcion = "";
-        int filaSeleccionada = this.tblContacto.getSelectedRow();
-        
-        id =   Integer.parseInt(modelo.getValueAt(filaSeleccionada,0).toString());
-        correo = String.valueOf(modelo.getValueAt(filaSeleccionada, 1));
-        clave = String.valueOf(modelo.getValueAt(filaSeleccionada, 2));
-        alias = String.valueOf(modelo.getValueAt(filaSeleccionada, 3));
-        descripcion = String.valueOf(modelo.getValueAt(filaSeleccionada, 4));
-        txtCorreo.setText(correo);
-        txtClave.setText(clave);
-        txtAlias.setText(alias);
-        txtDescripcion.setText(descripcion);
-        
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        
-        /*modelo.getValueAt(ERROR, WIDTH)*/
-        /*
-        
-        txtId.setEnabled(true);
-        txtNombre.setEnabled(true);
-        txtFecha.setEnabled(true);
-        txtPersonas.setEnabled(true);
-        txtEmpresa.setEnabled(true);
-        txtCargo.setEnabled(true);
-        txtCorreo.setEnabled(true);
-        txtTelefono.setEnabled(true);
-        txtDireccion.setEnabled(true);
-        txtNota.setEnabled(true);
-        cboDepartamento.setEnabled(true);
+        int fila = tblContacto.getSelectedRow();
+        if (fila >= 0) {
+            // Obtener y guardar el ID
+            idSeleccionado = tblContacto.getValueAt(fila, 0).toString(); // SIN Integer.parseInt
 
-        DatosContacto.habilitarCampos(escritorio);
+            // Llenar los campos de texto
+            txtCorreo.setText(tblContacto.getValueAt(fila, 1).toString());
+            txtClave.setText(tblContacto.getValueAt(fila, 2).toString());
+            txtAlias.setText(tblContacto.getValueAt(fila, 3).toString());
+            txtDescripcion.setText(tblContacto.getValueAt(fila, 4).toString());
 
-        // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtNombre,txtFecha,txtPersonas,txtEmpresa,txtCargo,txtCorreo,txtTelefono,txtDireccion,txtNota};
+            // Desactivar botones innecesarios
+            btnAgregar.setEnabled(false);
+            btnEditar.setEnabled(false);
 
-        JComboBox[] combos = {cboDepartamento};
-        DatosContacto.Editar(tblContacto, camposTexto, combos);
+            // Activar botones útiles
+            btnGuardar.setEnabled(true);
+            btnDeshacer.setEnabled(true);
 
-        esNuevo = false;
-*/
+            // Hacer los campos editables
+            Habilitar(true);
+            txtCorreo.requestFocus();
+
+            esNuevo = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    /* esNuevo = true;
+        Habilitar(true);
+        txtCorreo.requestFocus();*/
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       esNuevo = true;
-       Limpiar();
+        esNuevo = true;
+        Limpiar();
         Habilitar(true);
         txtCorreo.requestFocus();
-          btnGuardar.setEnabled(true);
+        btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
         btnEditar.setEnabled(false);
         btnEliminar.setEnabled(false);
@@ -388,8 +343,8 @@ private void Habilitar(boolean estado){
         btnAgregar.setEnabled(false);
         txtNombre.requestFocus();
         esNuevo = true;
-*/
-       
+         */
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
 

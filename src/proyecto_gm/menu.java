@@ -360,10 +360,6 @@ public class menu extends javax.swing.JFrame {
         menuConfiguracion.add(subMenuModulos);
 
         subMenuDepartamentos.setText("Departamentos");
-<<<<<<< HEAD
-=======
-        subMenuDepartamentos.setEnabled(false);
->>>>>>> c7373f73a2138cfc077d4a61aadde6e35c118b79
         subMenuDepartamentos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subMenuDepartamentosActionPerformed(evt);
@@ -707,10 +703,7 @@ public class menu extends javax.swing.JFrame {
 
     private void subMenuDepartamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuDepartamentosActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
         Abrirdepartamentos();
-=======
->>>>>>> c7373f73a2138cfc077d4a61aadde6e35c118b79
     }//GEN-LAST:event_subMenuDepartamentosActionPerformed
 
    

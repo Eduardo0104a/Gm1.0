@@ -169,18 +169,34 @@ public class DatosPeriodo {
     // Actualizar datos
     public static void Actualizar(Periodos periodo, JTable tabla) {
         CallableStatement cstmt = null;
+
+        // Confirmación antes de actualizar
+        int opcion = JOptionPane.showConfirmDialog(
+                null,
+                "¿Está seguro de que desea actualizar este periodo?",
+                "Confirmar actualización",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (opcion != JOptionPane.YES_OPTION) {
+            return; // Si el usuario elige "No", se cancela
+        }
+
         try {
             cstmt = conn.prepareCall("{ CALL actualizar_periodos(?, ?) }");
             cstmt.setString(1, periodo.getId());
             cstmt.setString(2, periodo.getDescripcion());
 
-            cstmt.execute(); // se actualiza los datos en la BD
+            cstmt.execute(); // Ejecutar actualización
 
-            // Actualizamos la tabla
+            // Actualizar tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
             DatosPeriodo.Listar(modelo);
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "Periodo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
