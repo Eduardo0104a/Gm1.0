@@ -16,3 +16,4 @@ Cambios realizado por Emerson Apaza:
 - Cambios en el paquete Proveedores (Funciona)
 - Cambios en el paquete Periodos (Funciona)
 - Cambios en el paquete Credenciales (Funciona)
+- Avanzando paquete cuentasbancarias
