@@ -702,10 +702,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuModulosActionPerformed
 
     private void subMenuDepartamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuDepartamentosActionPerformed
-<<<<<<< HEAD
-        // TODO add your handling code here:
-=======
->>>>>>> 4b214c50468cabda45615f785ab9a34a213071c6
+
         Abrirdepartamentos();
     }//GEN-LAST:event_subMenuDepartamentosActionPerformed
 

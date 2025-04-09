@@ -101,8 +101,13 @@ public class DatosCuentas {
                 String tipoPropietarioTexto = tipoPropietario.equals("P") ? "Persona Natural" : "Empresa";
                 String tipoMoneda = rs.getString("TipoMoneda");
                 String tipoMonedaTexto = tipoMoneda.equals("S") ? "Soles" : "Dólares";
-                Object[] row = new Object[]{rs.getString("IdCuentaBancaria"), tipoPropietarioTexto, rs.getString("Nombres"),
-                    rs.getString("Banco"), rs.getString("CCC"), rs.getString("CCI"), tipoMonedaTexto};
+                Object[] row = new Object[]{
+                    rs.getString("IdCuentaBancaria"), 
+                    tipoPropietarioTexto, 
+                    rs.getString("Nombres"),
+                    rs.getString("Banco"), 
+                    rs.getString("CCC"), 
+                    rs.getString("CCI"), tipoMonedaTexto};
                 modelo.addRow(row);
             }
         } catch (SQLException e) {
@@ -192,82 +197,103 @@ public class DatosCuentas {
     }
 
     // Actualizar datos
-    public static void Actualizar(Cuentas cuenta, JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            cstmt = conn.prepareCall("{ CALL actualizar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
+    // Actualizar datos
+public static void Actualizar(Cuentas cuenta, JTable tabla) {
+    CallableStatement cstmt = null;
+    try {
+        cstmt = conn.prepareCall("{ CALL actualizar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
 
-            cstmt.setInt(1, cuenta.getIdCuenta());
-            cstmt.setString(2, cuenta.getTipoPropietario());
-            cstmt.setString(3, cuenta.getNombres());
-            cstmt.setInt(4, cuenta.getIdBanco());
-            cstmt.setString(5, cuenta.getNroCuenta());
-            cstmt.setString(6, cuenta.getNroCuentaInterbancaria());
-            cstmt.setString(7, cuenta.getTipoMoneda());
+        cstmt.setInt(1, cuenta.getIdCuenta());
+        cstmt.setString(2, cuenta.getTipoPropietario());
+        cstmt.setString(3, cuenta.getNombres());
+        cstmt.setInt(4, cuenta.getIdBanco());
+        cstmt.setString(5, cuenta.getNroCuenta());
+        cstmt.setString(6, cuenta.getNroCuentaInterbancaria());
+        cstmt.setString(7, cuenta.getTipoMoneda());
 
-            cstmt.execute(); // se inserta los datos a la BD
+        int rowsUpdated = cstmt.executeUpdate(); // Devuelve el número de filas afectadas
 
-            // Actualizamos la tabla
+        // Verificar si se actualizó alguna fila
+        if (rowsUpdated > 0) {
+            // Si se actualizó, actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            Listar(modelo);
+            modelo.setRowCount(0); // Limpiar la tabla
+            Listar(modelo); // Volver a listar los datos
 
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "Los datos se actualizaron correctamente.", "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Si no se actualizó nada
+            JOptionPane.showMessageDialog(null, "No se encontró la cuenta o no hubo cambios.", "Sin cambios", JOptionPane.WARNING_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            if (cstmt != null) {
+                cstmt.close();
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
+}
+
 
     // Eliminar datos
     public static void Eliminar(JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            // Obtener el indice de la fila seleccionada
-            int fila = tabla.getSelectedRow();
+    CallableStatement cstmt = null;
+    try {
+        // Obtener el índice de la fila seleccionada
+        int fila = tabla.getSelectedRow();
 
-            if (fila >= 0) {
-                String[] options = {"Sí", "No", "Cancelar"};
-                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-                if (opcion == JOptionPane.YES_OPTION) {
-                    // Obtener los datos de fila seleccionada
-                    int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); //Se asume que el ID se encuentra en la primera columna
+        if (fila >= 0) {
+            String[] options = {"Sí", "No", "Cancelar"};
+            int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+            if (opcion == JOptionPane.YES_OPTION) {
+                // Obtener los datos de la fila seleccionada
+                int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); // Se asume que el ID se encuentra en la primera columna
 
-                    // Ejecutar el procedimiento almacenado
-                    cstmt = conn.prepareCall("{ CALL eliminar_cuenta(?) }");
-                    cstmt.setInt(1, id);
-                    cstmt.execute();
+                // Ejecutar el procedimiento almacenado
+                cstmt = conn.prepareCall("{ CALL eliminar_cuenta(?) }");
+                cstmt.setInt(1, id);
 
-                    // Actualizamos la tabla
+                int rowsDeleted = cstmt.executeUpdate(); // Devuelve el número de filas eliminadas
+
+                if (rowsDeleted > 0) {
+                    // Si se eliminó correctamente, actualizamos la tabla
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                    modelo.setRowCount(0);
-                    Listar(modelo);
+                    modelo.setRowCount(0); // Limpiar la tabla
+                    Listar(modelo); // Volver a listar los datos
 
+                    // Mostrar mensaje de éxito
+                    JOptionPane.showMessageDialog(null, "La cuenta se eliminó correctamente.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    tabla.clearSelection();
+                    // Si no se eliminó ninguna fila
+                    JOptionPane.showMessageDialog(null, "No se encontró la cuenta o no hubo cambios.", "Sin cambios", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
 
+            } else {
+                tabla.clearSelection(); // Cancelar la acción
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            if (cstmt != null) {
+                cstmt.close();
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
+}
+
 
     // Validar campos
     public static boolean Validar(JTextField[] campos) {
